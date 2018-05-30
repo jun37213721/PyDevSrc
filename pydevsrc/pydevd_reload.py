@@ -36,6 +36,7 @@ Some of the many limitations include:
 import imp
 import sys
 import types
+import inspect
 
 
 def xreload(mod):
@@ -125,12 +126,7 @@ def _update(oldobj, newobj):
         # Provide a hook for updating
         return newobj.__reload_update__(oldobj)
     
-    if hasattr(types, 'ClassType'):
-        classtype = types.ClassType
-    else:
-        classtype = type
-    
-    if isinstance(newobj, classtype):
+    if inspect.isclass(newobj):
         return _update_class(oldobj, newobj)
     if isinstance(newobj, types.FunctionType):
         return _update_function(oldobj, newobj)
